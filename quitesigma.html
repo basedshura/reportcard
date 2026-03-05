@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministry of Sibling Affairs - Permanent Record</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Reenie+Beanie&family=Special+Elite&family=Black+Ops+One&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-paper: #f2ede0;
+            --ink: #1a1608;
+            --line-color: #3a3a3a;
+            --stamp-color: rgba(160, 15, 15, 0.9);
+            --stamp-glow: rgba(160,15,15,0.25);
+            --blue-ink: #0d3d8a;
+            --faded-blue: rgba(13,61,138,0.75);
+            --redact: #111;
+            --rule: #b0a090;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1713;
+            background-image:
+                radial-gradient(ellipse at 20% 30%, #2a2218 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, #201e15 0%, transparent 60%),
+                repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+            font-family: 'Special Elite', serif;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px 80px;
+            min-height: 100vh;
+            color: var(--ink);
+        }
+
+        /* ── PAPER ── */
+        .record-sheet {
+            background-color: var(--bg-paper);
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+            width: 100%;
+            max-width: 870px;
+            padding: 65px 70px 70px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 2px 0 #c8b99a,
+                0 25px 60px rgba(0,0,0,0.75),
+                0 0 0 1px #c8b89a inset,
+                inset 0 0 120px rgba(0,0,0,0.04);
+            animation: floatIn 0.9s cubic-bezier(0.22,1,0.36,1) both;
+        }
+
+        /* Aged paper edges */
+        .record-sheet::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(0,0,0,0.09) 0%, transparent 40%),
+                radial-gradient(ellipse at 100% 0%, rgba(0,0,0,0.07) 0%, transparent 35%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.11) 0%, transparent 40%),
+                radial-gradient(ellipse at 100% 100%, rgba(0,0,0,0.06) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Left margin red line */
+        .record-sheet::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 95px; bottom: 0;
+            width: 2px;
+            background: rgba(180, 60, 60, 0.35);
+            z-index: 1;
+        }
+
+        /* ── DECORATIONS ── */
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-42deg);
+            font-family: 'Black Ops One', cursive;
+            font-size: 7.5rem;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.05);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 0;
+            letter-spacing: 4px;
+        }
+
+        .paperclip {
+            position: absolute;
+            top: -8px; left: 38px;
+            width: 28px; height: 90px;
+            z-index: 30;
+            pointer-events: none;
+        }
+        .paperclip svg { width: 100%; height: 100%; }
+
+        .coffee-stain {
+            position: absolute;
+            bottom: 80px; right: 45px;
+            width: 110px; height: 105px;
+            border-radius: 50% 48% 52% 50%;
+            background:
+                radial-gradient(ellipse at center, transparent 55%, rgba(101,68,38,0.13) 60%, rgba(101,68,38,0.22) 67%, rgba(101,68,38,0.1) 72%, transparent 78%);
+            transform: rotate(20deg) scaleX(1.15);
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(0.5px);
+        }
+
+        .torn-edge {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: var(--bg-paper);
+            z-index: 5;
+            clip-path: polygon(0 0, 1% 100%, 3% 40%, 5% 90%, 7% 20%, 9% 70%, 11% 10%, 13% 60%, 15% 85%, 17% 30%, 19% 75%, 21% 15%, 23% 65%, 25% 40%, 27% 80%, 29% 25%, 31% 70%, 33% 15%, 35% 55%, 37% 90%, 39% 20%, 41% 65%, 43% 35%, 45% 85%, 47% 10%, 49% 60%, 51% 30%, 53% 75%, 55% 20%, 57% 70%, 59% 40%, 61% 85%, 63% 15%, 65% 65%, 67% 30%, 69% 80%, 71% 10%, 73% 55%, 75% 90%, 77% 25%, 79% 70%, 81% 15%, 83% 60%, 85% 35%, 87% 80%, 89% 20%, 91% 65%, 93% 40%, 95% 85%, 97% 15%, 99% 60%, 100% 0);
+        }
+
+        /* ── HEADER ── */
+        header {
+            border-bottom: 3px double var(--line-color);
+            padding-bottom: 22px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 90px 1fr 130px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-logo {
+            width: 82px; height: 82px;
+            border: 2px solid #444;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.8rem;
+            opacity: 0.75;
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 80%);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .header-center { text-align: center; }
+        .header-center h1 {
+            font-family: 'Black Ops One', cursive;
+            font-size: 1.65rem;
+            letter-spacing: 2px;
+            color: #111;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+        .header-center h2 {
+            font-family: 'Special Elite', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            font-weight: normal;
+            color: #444;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .header-center .ref-line {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: #555;
+            margin-top: 10px;
+            border-top: 1px solid #bbb;
+            padding-top: 6px;
+        }
+
+        /* ── PHOTO BOX ── */
+        .passport-box {
+            width: 120px; height: 148px;
+            border: 2px solid #555;
+            background: linear-gradient(145deg, #d8d4cc, #c8c4bc);
+            position: relative;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .passport-box::after {
+            content: "";
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.07) 4px, rgba(255,255,255,0.07) 5px);
+        }
+        .passport-placeholder {
+            text-align: center;
+            font-size: 0.62rem;
+            color: #444;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            z-index: 1;
+            line-height: 1.5;
+        }
+        .passport-icon { font-size: 2rem; z-index: 1; }
+        .passport-sub { font-size: 0.55rem; color: #666; z-index: 1; font-family: sans-serif; }
+
+        /* ── SECTIONS ── */
+        section {
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .section-label {
+            background: var(--ink);
+            color: #e8e0cc;
+            padding: 3px 14px 3px 10px;
+            font-size: 0.72rem;
+            font-weight: bold;
+            font-family: 'Courier Prime', monospace;
+            letter-spacing: 1.5px;
+            clip-path: polygon(0 0, 97% 0, 100% 100%, 0 100%);
+            white-space: nowrap;
+        }
+        .section-rule {
+            flex: 1;
+            height: 1px;
+            background: repeating-linear-gradient(90deg, var(--rule) 0, var(--rule) 5px, transparent 5px, transparent 10px);
+        }
+
+        /* ── DATA GRID ── */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            row-gap: 14px;
+            column-gap: 12px;
+            align-items: baseline;
+        }
+
+        .label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #555;
+            text-align: right;
+            padding-top: 2px;
+        }
+
+        .input-line {
+            border-bottom: 1.5px dotted #999;
+            padding: 2px 10px 4px;
+            min-height: 28px;
+            position: relative;
+        }
+
+        /* ── HANDWRITING ── */
+        .hw {
+            font-family: 'Reenie Beanie', cursive;
+            color: var(--blue-ink);
+            font-size: 1.55rem;
+            line-height: 1;
+            display: inline-block;
+        }
+        .hw-sm { font-size: 1.25rem; }
+        .hw-r1 { transform: rotate(-1.2deg); display: inline-block; }
+        .hw-r2 { transform: rotate(1.8deg); display: inline-block; }
+        .hw-r3 { transform: rotate(-2.2deg); display: inline-block; }
+        .hw-r4 { transform: rotate(0.8deg); display: inline-block; }
+
+        /* ── CLASSIFICATION BADGE ── */
+        .classification-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 5px 0;
+            margin-bottom: 28px;
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #999;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+        .class-badge {
+            font-family: 'Black Ops One', cursive;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #8b0000;
+            border: 1.5px solid #8b0000;
+            padding: 2px 10px;
+            white-space: nowrap;
+        }
+        .class-dots {
+            font-size: 0.6rem;
+            color: #aaa;
+            letter-spacing: 4px;
+        }
+
+        /* ── TABLE ── */
+        /* Wrapper for mobile scrolling */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 2px solid #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            border: none;
+            min-width: 500px; /* Forces scroll on mobile */
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 9px 10px;
+            vertical-align: middle;
+        }
+        th {
+            background: rgba(0,0,0,0.12);
+            font-family: 'Courier Prime', monospace;
+            text-transform: uppercase;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            color: #222;
+        }
+        tr:nth-child(even) td { background: rgba(0,0,0,0.025); }
+        .rating-cell {
+            font-family: 'Black Ops One', cursive;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .verdict-hazard { color: #8b0000; font-weight: bold; font-family: 'Courier Prime', monospace; font-size: 0.8rem; letter-spacing: 1px; }
+        .verdict-ok { color: #445500; font-family: 'Courier Prime', monospace; font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* ── REDACTED ── */
+        .redacted {
+            background: var(--redact);
+            color: var(--redact);
+            padding: 1px 6px;
+            display: inline;
+            border-radius: 1px;
+            cursor: default;
+            transition: background 0.3s, color 0.3s;
+            user-select: none;
+        }
+        .redacted:hover {
+            background: #8b0000;
+            color: #ffcccc;
+        }
+
+        /* ── CHECKBOX LIST ── */
+        .punishment-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 30px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        .checkbox-item { display: flex; align-items: flex-start; gap: 10px; }
+        .checkbox-box {
+            width: 14px; height: 14px;
+            border: 1.5px solid #444;
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+        .checkbox-box.checked::after {
+            content: "✗";
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--blue-ink);
+            line-height: 1;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 1rem;
+        }
+
+        /* ── SEVERITY METER ── */
+        .severity-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            color: #555;
+        }
+        .severity-label { width: 100px; text-align: right; text-transform: uppercase; }
+        .severity-track {
+            flex: 1;
+            height: 10px;
+            border: 1.5px solid #555;
+            background: rgba(255,255,255,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .severity-fill {
+            height: 100%;
+            background: repeating-linear-gradient(90deg, #8b0000 0, #8b0000 6px, #c22 6px, #c22 8px);
+            transition: width 1.2s ease;
+        }
+
+        /* ── INCIDENT BOX ── */
+        .incident-box {
+            border: 1.5px solid #555;
+            background:
+                repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, rgba(100,100,120,0.3) 31px, rgba(100,100,120,0.3) 32px);
+            background-size: 100% 32px;
+            min-height: 160px;
+            padding: 8px 18px;
+            line-height: 32px;
+            position: relative;
+        }
+        .incident-box::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 44px; bottom: 0;
+            width: 1px;
+            background: rgba(200,100,100,0.4);
+        }
+        .incident-text {
+            font-family: 'Reenie Beanie', cursive;
+            color: var(--blue-ink);
+            font-size: 1.5rem;
+            line-height: 32px;
+            word-wrap: break-word;
+        }
+
+        /* ── THREAT ASSESSMENT ── */
+        .threat-box {
+            border: 2px dashed #666;
+            padding: 14px 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            text-align: center;
+        }
+        .threat-item { }
+        .threat-value {
+            font-family: 'Black Ops One', cursive;
+            font-size: 2.2rem;
+            color: #8b0000;
+            line-height: 1;
+        }
+        .threat-value.ok { color: #445500; }
+        .threat-value.warn { color: #8b4a00; }
+        .threat-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .threat-divider {
+            border-left: 1px solid #bbb;
+        }
+
+        /* ── STAMP ── */
+        .stamp-container {
+            position: absolute;
+            top: 42%; right: 60px;
+            transform: rotate(-14deg);
+            z-index: 15;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            opacity: 0;
+            animation: stampSlam 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.4s forwards;
+        }
+        @keyframes stampSlam {
+            0%   { opacity: 0; transform: rotate(-14deg) scale(3.5); filter: blur(8px); }
+            70%  { opacity: 1; transform: rotate(-14deg) scale(0.92); filter: blur(0); }
+            85%  { transform: rotate(-14deg) scale(1.04); }
+            100% { opacity: 0.88; transform: rotate(-14deg) scale(1); filter: blur(0); }
+        }
+        .stamp-inner {
+            border: 7px solid var(--stamp-color);
+            color: var(--stamp-color);
+            padding: 10px 22px;
+            font-family: 'Black Ops One', cursive;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1;
+            text-shadow: 0 0 20px var(--stamp-glow);
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+        }
+        .stamp-sub {
+            font-size: 1rem;
+            display: block;
+            letter-spacing: 5px;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            color: var(--stamp-color);
+            margin-top: 4px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 45px;
+            padding-top: 20px;
+            border-top: 2px double #555;
+            position: relative;
+            z-index: 2;
+        }
+        .signature-box { text-align: center; }
+        .sign-line {
+            border-bottom: 1px solid #333;
+            height: 52px;
+            width: 190px;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 4px;
+        }
+        .sign-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .barcode-area { text-align: right; }
+        .barcode {
+            font-family: 'Libre Barcode 39 Text', cursive;
+            font-size: 3.5rem;
+            line-height: 1;
+            opacity: 0.75;
+            transform: scaleY(1.4);
+            display: block;
+        }
+        .barcode-sub {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.55rem;
+            color: #777;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: right;
+            margin-top: 6px;
+        }
+
+        /* ── CORNER STAMPS ── */
+        .corner-mark {
+            position: absolute;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.55rem;
+            color: rgba(0,0,0,0.25);
+            letter-spacing: 1px;
+        }
+        .corner-mark.tl { top: 12px; left: 12px; }
+        .corner-mark.tr { top: 12px; right: 12px; text-align: right; }
+        .corner-mark.bl { bottom: 12px; left: 12px; }
+        .corner-mark.br { bottom: 12px; right: 12px; text-align: right; }
+
+        /* ── STICKY NOTE ── */
+        .sticky {
+            position: absolute;
+            top: 160px; right: -12px;
+            width: 120px;
+            background: #fef08a;
+            padding: 10px 12px;
+            transform: rotate(3deg);
+            box-shadow: 3px 4px 10px rgba(0,0,0,0.3);
+            z-index: 20;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 1.15rem;
+            color: #333;
+            line-height: 1.3;
+        }
+        .sticky::before {
+            content: "";
+            position: absolute;
+            top: -5px; left: 50%;
+            transform: translateX(-50%);
+            width: 30px; height: 10px;
+            background: rgba(180,150,0,0.4);
+        }
+
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(60px) rotateX(6deg); }
+            to   { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        /* ── RESPONSIVE & MOBILE FRIENDLY ── */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .record-sheet { 
+                padding: 40px 20px 30px; 
+                margin: 10px 0;
+            }
+
+            /* Adjust left red line position */
+            .record-sheet::before { left: 25px; }
+            .incident-box::before { left: 25px; }
+
+            /* Header Stacking */
+            header { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+                gap: 15px;
+            }
+            .header-logo { margin: 0 auto; }
+            .passport-box { margin: 10px auto 0; }
+            
+            /* Typography Adjustments */
+            .header-center h1 { font-size: 1.4rem; }
+            .watermark { font-size: 4rem; }
+
+            /* Grid to Stack */
+            .data-grid { grid-template-columns: 1fr; row-gap: 5px; }
+            .label { text-align: left; margin-top: 10px; }
+            
+            /* Input Lines */
+            .input-line { padding-left: 0; }
+
+            /* Punishment Checkboxes */
+            .punishment-list { grid-template-columns: 1fr; gap: 12px; }
+
+            /* Threat Box */
+            .threat-box { 
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
+            .threat-divider { 
+                border-left: none; 
+                border-top: 1px solid #bbb; 
+                padding-top: 20px;
+            }
+            
+            /* Severity Meters */
+            .severity-row { flex-direction: column; align-items: stretch; gap: 5px; }
+            .severity-label { text-align: left; width: 100%; }
+
+            /* Hide/Move obstructions */
+            .sticky { display: none; }
+            .coffee-stain { opacity: 0.3; bottom: 10px; right: 10px; width: 80px; height: 80px; }
+            .stamp-container { 
+                top: 15%; 
+                right: 10px; 
+                opacity: 0.5 !important; /* Force visible but see-through */
+                transform: rotate(-14deg) scale(0.6) !important; 
+            }
+            .stamp-inner { font-size: 3rem; border-width: 4px; padding: 5px 10px; }
+
+            /* Footer Stacking */
+            footer { flex-direction: column; align-items: center; gap: 30px; text-align: center; }
+            .barcode-area { text-align: center; order: 3; }
+            .barcode { display: inline-block; }
+            .barcode-sub { text-align: center; }
+            .signature-box { width: 100%; display: flex; flex-direction: column; align-items: center; }
+            
+            /* Corner marks - simplify */
+            .corner-mark { font-size: 0.45rem; }
+        }
+    </style>
+</head>
+<body>
+
+<main class="record-sheet">
+    <!-- Decorations -->
+    <div class="watermark">CONFIDENTIAL</div>
+    <div class="torn-edge"></div>
+    <div class="coffee-stain"></div>
+
+    <!-- Paperclip SVG -->
+    <div class="paperclip">
+        <svg viewBox="0 0 28 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="clip" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#bbb"/>
+                    <stop offset="40%" stop-color="#e8e8e8"/>
+                    <stop offset="60%" stop-color="#ddd"/>
+                    <stop offset="100%" stop-color="#aaa"/>
+                </linearGradient>
+            </defs>
+            <path d="M 6 10 Q 6 2 14 2 Q 22 2 22 10 L 22 75 Q 22 84 14 84 Q 6 84 6 75 L 6 18 Q 6 12 14 12 Q 20 12 20 18 L 20 72" stroke="url(#clip)" stroke-width="3.5" stroke-linecap="round" fill="none" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.3))"/>
+        </svg>
+    </div>
+
+    <!-- Sticky Note -->
+    <div class="sticky">See attached evidence (pizza box)</div>
+
+    <!-- Corner marks -->
+    <div class="corner-mark tl">SA-99-0042<br>COPY 1 OF 1</div>
+    <div class="corner-mark tr">PAGE 1/1<br>CLASSIFIED</div>
+    <div class="corner-mark bl">FILED: 2025</div>
+    <div class="corner-mark br">MOD. SA FORM 7-B</div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-logo">⚖️</div>
+        <div class="header-center">
+            <h1>Ministry of Sibling Affairs</h1>
+            <h2>Department of Domestic Disputes &amp; Grievances</h2>
+            <div class="ref-line">REF: SA-99-0042 &nbsp;//&nbsp; CLASSIFICATION: TOP SECRET &nbsp;//&nbsp; COPY: 1 OF 1</div>
+        </div>
+        <div class="passport-box">
+            <div class="passport-icon">📷</div>
+            <div class="passport-placeholder">ATTACH<br>SUBJECT<br>PHOTO</div>
+            <div class="passport-sub">(GLUE ONLY — NO TAPE)</div>
+        </div>
+    </header>
+
+    <!-- Classification strip -->
+    <div class="classification-strip">
+        <div class="class-dots">·····</div>
+        <div class="class-badge">TOP SECRET</div>
+        <div class="class-dots">·····</div>
+        <div class="class-badge">EYES ONLY</div>
+        <div class="class-dots">·····</div>
+    </div>
+
+    <!-- SEC 1: Subject Data -->
+    <section>
+        <div class="section-header">
+            <div class="section-label">SEC 1.0 // SUBJECT IDENTIFICATION</div>
+            <div class="section-rule"></div>
+        </div>
+        <div class="data-grid">
+            <div class="label">Suspect Name:</div>
+            <div class="input-line"><span class="hw hw-r1">The Little Sakshi</span></div>
+
+            <div class="label">Known Aliases:</div>
+            <div class="input-line"><span class="hw hw-r2">"The Snitch" / "Golden Child" / "Pest"</span></div>
+
+            <div class="label">Biological Classification:</div>
+            <div class="input-line"><span style="font-family:'Special Elite'">Human </span><span class="redacted" title="hover to reveal"> (Highly Debatable) </span></div>
+
+            <div class="label">Primary Weakness:</div>
+            <div class="input-line"><span class="hw hw-r3">Not saying no</span></div>
+
+            <div class="label">Last Seen:</div>
+            <div class="input-line"><span class="hw hw-r4 hw-sm">Talking to her bf, ghosting Jod - 3 Am</span></div>
+        </div>
+    </section>
+
+    <!-- SEC 2: Threat Assessment -->
+    <section>
+        <div class="section-header">
+            <div class="section-label">SEC 2.0 // THREAT ASSESSMENT METRICS</div>
+            <div class="section-rule"></div>
+        </div>
+        <div class="threat-box">
+            <div class="threat-item">
+                <div class="threat-value">9.7</div>
+                <div class="threat-label">Annoyance Index</div>
+            </div>
+            <div class="threat-item threat-divider">
+                <div class="threat-value warn">LOW ASF</div>
+                <div class="threat-label">Cooperation Level</div>
+            </div>
+            <div class="threat-item threat-divider">
+                <div class="threat-value">F−</div>
+                <div class="threat-label">Hygiene Score</div>
+            </div>
+        </div>
+        <div class="severity-row">
+            <div class="severity-label">Overall Threat</div>
+            <div class="severity-track"><div class="severity-fill" style="width:88%"></div></div>
+            <div style="font-size:0.7rem; color:#8b0000; font-family:'Courier Prime',monospace">88%</div>
+        </div>
+        <div class="severity-row">
+            <div class="severity-label">Snitch Risk</div>
+            <div class="severity-track"><div class="severity-fill" style="width:95%"></div></div>
+            <div style="font-size:0.7rem; color:#8b0000; font-family:'Courier Prime',monospace">95%</div>
+        </div>
+        <div class="severity-row">
+            <div class="severity-label">Redeemability</div>
+            <div class="severity-track"><div class="severity-fill" style="width:12%; background:repeating-linear-gradient(90deg,#445500 0,#445500 6px,#669900 6px,#669900 8px)"></div></div>
+            <div style="font-size:0.7rem; color:#445500; font-family:'Courier Prime',monospace">12%</div>
+        </div>
+    </section>
+
+    <!-- SEC 3: Behavioral Matrix -->
+    <section>
+        <div class="section-header">
+            <div class="section-label">SEC 3.0 // BEHAVIORAL OFFENSE MATRIX</div>
+            <div class="section-rule"></div>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:22%">Offense Category</th>
+                        <th style="width:9%">Rating</th>
+                        <th style="width:14%">Verdict</th>
+                        <th>Field Officer Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Volume Control</td>
+                        <td class="rating-cell">F−</td>
+                        <td class="verdict-hazard">⬛ HAZARD</td>
+                        <td><span class="hw hw-sm hw-r1">Screams at everyone when mad, especially Jod</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Hygiene Standards</td>
+                        <td class="rating-cell">3/10</td>
+                        <td class="verdict-hazard">☣ TOXIC</td>
+                        <td><span class="hw hw-sm hw-r2">Eats Panipuri everyday, made with sweat</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Food Sharing</td>
+                        <td class="rating-cell">0/10</td>
+                        <td class="verdict-hazard">👑 DICTATOR</td>
+                        <td><span class="hw hw-sm hw-r3">Refuses to share any food with others</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Dish Washing</td>
+                        <td class="rating-cell">N/A</td>
+                        <td class="verdict-hazard">⚠ MISSING</td>
+                        <td><span class="hw hw-sm hw-r1">Dishes found. Subject: <span class="redacted"> nowhere </span></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Trust Level</td>
+                        <td class="rating-cell">-10/10</td>
+                        <td class="verdict-hazard">🚨 CRITICAL</td>
+                        <td><span class="hw hw-sm hw-r4">Hides everything, refuses to share certain matters</span></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'Courier Prime',monospace;font-size:0.82rem">Being Normal</td>
+                        <td class="rating-cell">?/10</td>
+                        <td class="verdict-ok">✓ PENDING</td>
+                        <td><span class="hw hw-sm hw-r2">Investigation ongoing. Outcome uncertain.</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SEC 4: Sanctions -->
+    <section>
+        <div class="section-header">
+            <div class="section-label">SEC 4.0 // RECOMMENDED SANCTIONS</div>
+            <div class="section-rule"></div>
+        </div>
+        <div class="punishment-list">
+            <div class="checkbox-item"><div class="checkbox-box checked"></div><span>Confiscate Phone Charger (48hrs)</span></div>
+            <div class="checkbox-item"><div class="checkbox-box"></div><span>Change Netflix Password</span></div>
+            <div class="checkbox-item"><div class="checkbox-box checked"></div><span>Mandatory Dish Duty (1 week)</span></div>
+            <div class="checkbox-item"><div class="checkbox-box"></div><span>Public Shaming at Dinner</span></div>
+            <div class="checkbox-item"><div class="checkbox-box checked"></div><span>Wi-Fi Suspension (72hrs)</span></div>
+            <div class="checkbox-item"><div class="checkbox-box"></div><span>Revoke Snack Privileges</span></div>
+            <div class="checkbox-item"><div class="checkbox-box"></div><span>Report to Supreme Court (Parents)</span></div>
+            <div class="checkbox-item"><div class="checkbox-box checked"></div><span>Formally Documented in Permanent Record</span></div>
+        </div>
+    </section>
+
+    <!-- SEC 5: Incident Report -->
+    <section>
+        <div class="section-header">
+            <div class="section-label">SEC 5.0 // INCIDENT NARRATIVE</div>
+            <div class="section-rule"></div>
+        </div>
+        <div class="incident-box">
+            <div class="incident-text">
+                Subject gained unauthorized access to room and confiscated personal item without consent. Movements: sneaky.<br>
+                Crime: Theft of Bluetooth speaker (borrowed, never returned).<br>
+                Evidence: Speaker found in subject's room. Dust suggests prolonged possession.<br>
+                Defense presented: "I was just using it temporarily."<br>
+                Court notes: Temporarily = 4 months. Define "temporarily" differently.
+            </div>
+        </div>
+    </section>
+
+    <!-- STAMP -->
+    <div class="stamp-container">
+        <div class="stamp-inner">
+            GUILTY
+            <span class="stamp-sub">NO PAROLE</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="signature-box">
+            <div class="sign-line">
+                <span class="hw hw-r2" style="font-size:1.6rem">Mom &amp; Dad</span>
+            </div>
+            <div class="sign-label">Supreme Court (Parents) — Chief Justices</div>
+        </div>
+
+        <div class="barcode-area">
+            <span class="barcode">*SIBLING-9942-X*</span>
+            <div class="barcode-sub">⊠ DO NOT COPY &nbsp; ⊠ MINISTRY USE ONLY</div>
+        </div>
+
+        <div class="signature-box">
+            <div class="sign-line" style="justify-content:flex-end">
+                <span class="hw hw-r3" style="font-size:1.4rem; color:#8b0000">Me (The Cool One)</span>
+            </div>
+            <div class="sign-label">Lead Prosecutor &amp; Aggrieved Party</div>
+        </div>
+    </footer>
+
+</main>
+
+</body>
+</html>
